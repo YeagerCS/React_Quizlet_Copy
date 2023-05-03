@@ -1,0 +1,22 @@
+create user interface design for ideas
+(
+    mainform with nav: Home.jsx,
+    new words pairs: NewWords.jsx,
+    word pair array access: WordPairs.jsx
+)
+
+structurize code into different files === plan structure of the application (easier implementation)
+
+add randomizing -> localStorage
+
+create form to add unlimited elements to an array with translation
+
+add multiple arrays and store them in localStorage
+access any word pairs
+
+export added arrays to json files
+
+(no-sql database) -- (RavenDB/MongoDB)?
+
+
+

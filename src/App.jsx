@@ -25,9 +25,11 @@ export default function App(){
 
   function checkAnswer(e){
     e.preventDefault()
+    const correctWord = inputEnglish ? wordsEnglish[index].toLowerCase() : wordsGerman[index].toLowerCase()
+    const correctWordAlt = correctWord.replace("to ", "")
 
-    if(currentInput.toLowerCase() == inputEnglish ? wordsEnglish[index].toLowerCase() : wordsGerman[index]){
-      setMassage("Correct")
+    if(currentInput.toLowerCase() === correctWord || currentInput.toLowerCase() === correctWordAlt){
+      setMassage("Correct") 
       setCurrentInput("")
       setIndex(prevIndex => prevIndex + 1)
     } else{
@@ -61,6 +63,13 @@ export default function App(){
   useEffect(() =>{
     localStorage.setItem("INPUT", inputEnglish)
   }, [inputEnglish])
+
+  useEffect(() => {
+    if(index == wordsEnglish.length){
+      setIndex(0)
+      setMassage("")
+    }
+  }, [wordsEnglish])
   
 
   return (

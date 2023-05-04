@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dialog from "./Dialog";
+import JSZip from "jszip"
 
 export function WordPairs({ allEnglishWords, allGermanWords, handleSetCurrentWords }) {
   const [selectedWordsEnglish, setSelectedWordsEnglish] = useState([]);
@@ -18,6 +19,28 @@ export function WordPairs({ allEnglishWords, allGermanWords, handleSetCurrentWor
 
   function setCurrentWords(){
     handleSetCurrentWords(selectedWordsEnglish, selectedWordsGerman)
+    setDisplayDialog([true, "Selected Successfully (Navigate to Home for usage)"])
+  }
+
+  function exportAllJSON(){
+    const zip = new JSZip()
+
+    for(let i = 0; i < s_allEnglishWords.length; i++){
+        const allWords = {
+            english: s_allEnglishWords[i],
+            german: s_allGermanWords[i]
+        }
+        zip.file("array_" + i + ".json", JSON.stringify(allWords, null, 2))
+    }
+
+    zip.generateAsync({ type: "blob" }).then(content => {
+        const link = document.createElement('a');
+        link.download = 'files.zip';
+        link.href = window.URL.createObjectURL(content);
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    })
   }
 
   function exportJSON(){
@@ -94,6 +117,7 @@ export function WordPairs({ allEnglishWords, allGermanWords, handleSetCurrentWor
 
     setSelectedWordsEnglish([])
     setSelectedWordsGerman([])
+    setDisplayDialog([true, "Deleted Successfully"])
   }
 
   useEffect(() => {
@@ -104,12 +128,12 @@ export function WordPairs({ allEnglishWords, allGermanWords, handleSetCurrentWor
   return (
     <>
         {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
-
         <header>
             <nav>
             <ul>
                 <div>
-                    <li><button className="btnStyleDanger" onClick={exportJSON}>Export JSON</button></li>
+                    <li><button className="btnStyleDanger" onClick={exportAllJSON}>Export All JSON</button></li>
+                    <li><button className="btnStyleDanger" onClick={exportJSON}>Export Selected JSON</button></li>
                     <li><button className="btnStyleDanger" onClick={importJSON}>Import JSON</button></li>
                     <li><a href="#bottomBtn" id="bottom">Go to Bottom</a></li>
                 </div>

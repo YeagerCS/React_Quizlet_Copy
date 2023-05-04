@@ -49,12 +49,9 @@ export function Home({ english, german }){
   }, [index])
 
   useEffect(() => {
-    if(localStorage.getItem("WORDSENG") && !english.length){
-      setWordsEnglish(JSON.parse(localStorage.getItem("WORDSENG")))
-      setWordsGerman(JSON.parse(localStorage.getItem("WORDSGER")))
-    } else if(english.length){
-        setWordsEnglish(english)
-        setWordsGerman(german)
+    if(localStorage.getItem("TEMPENGSET") && english.length){
+        setWordsEnglish(JSON.parse(localStorage.getItem("TEMPENGSET")))
+        setWordsGerman(JSON.parse(localStorage.getItem("TEMPGERSET")))
     }
     else{
       fetch("data/words.json").then(response => response.json())
@@ -109,8 +106,8 @@ export function Home({ english, german }){
   }
 
   function setLocalStorage(english, german){
-    localStorage.setItem("WORDSENG", JSON.stringify(english))
-    localStorage.setItem("WORDSGER", JSON.stringify(german))
+    localStorage.setItem("TEMPENGSET", JSON.stringify(english))
+    localStorage.setItem("TEMPGERSET", JSON.stringify(german))
   }
 
   return (
@@ -130,17 +127,19 @@ export function Home({ english, german }){
           </ul>
         </nav>
       </header>
-      <div id="maindiv">
-        <label htmlFor="words">{inputEnglish ? wordsGerman[index] : wordsEnglish[index]}</label> 
-        <input type="text" className="boxStyle" name="words" id="words" placeholder="Answer..." value={currentInput} onChange={e => setCurrentInput(e.target.value)}/>
-        <button className="btnStyle" onClick={checkAnswer}>Check</button>
-        <div id="buttonsWordPair">
-            <em><button className="btnStyle" onClick={() => setAnswer(!answer)}>{answer ? "Hide answer" : "Show answer"}</button></em> 
-            <em>{index + "/" + wordsEnglish.length}</em>
+      <form onSubmit={e => e.preventDefault()}>
+        <div id="maindiv">
+            <label htmlFor="words">{inputEnglish ? wordsGerman[index] : wordsEnglish[index]}</label> 
+            <input type="text" className="boxStyle" name="words" id="words" placeholder="Answer..." value={currentInput} onChange={e => setCurrentInput(e.target.value)}/>
+            <button className="btnStyle" onClick={checkAnswer}>Check</button>
+            <div id="buttonsWordPair">
+                <em><button className="btnStyle" onClick={() => setAnswer(!answer)}>{answer ? "Hide answer" : "Show answer"}</button></em> 
+                <em>{index + "/" + wordsEnglish.length}</em>
+            </div>
+            <p>{answer ? inputEnglish ? wordsEnglish[index] : wordsGerman[index] : ""}&#x200B;</p>
+            <p className={`message ${massage === "Correct" ? "correct" : "incorrect"}`}>{massage}&#x200B;</p>
         </div>
-        <p>{answer ? inputEnglish ? wordsEnglish[index] : wordsGerman[index] : ""}&#x200B;</p>
-        <p className={`message ${massage === "Correct" ? "correct" : "incorrect"}`}>{massage}&#x200B;</p>
-      </div>
+      </form>
     </>
   )
   

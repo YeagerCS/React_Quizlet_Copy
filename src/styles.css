@@ -9,6 +9,7 @@ textarea{
 *{
     font-family: "Berlin sans FB";
     font-size: 30px;
+    scroll-behavior: smooth;
 }
 
 input[type=text]{
@@ -37,9 +38,26 @@ input[type=text]{
 }
 
 
+.btnStyleDanger{
+    background-color: rgb(94, 16, 5);
+    color: rgb(255, 64, 64);
+    border: 2px solid rgb(255, 64, 64);
+    border-radius: .25em;
+    transition: .1s;
+    font-family: "Berlin Sans FB";
+}
+
+.btnStyleDanger:hover{
+    cursor: pointer;
+    background-color: rgba(94, 16, 5, .8);
+    letter-spacing: .1px;
+}
+
+
 body{
     background-color: rgb(52, 53, 65);
     color: whitesmoke;
+    
 }
 
 .correct {
@@ -54,11 +72,11 @@ nav ul li{
     list-style-type: none;
 }
 
+
 header ul{
     display: flex;
     flex-direction: row;
-    justify-content: left;
-    gap: 1em;
+    justify-content: space-around;
 }
 
 #maindiv{
@@ -71,4 +89,120 @@ header ul{
     flex-direction: column;
     display: flex;
     height: 200px;
+}
+
+#newWordDiv{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+ul li{
+    list-style-type: none;
+}
+
+/*Copied*/
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    max-height: 0;
+    overflow-y: auto;
+}
+
+.styled-table thead tr {
+    background-color: rgb(64, 204, 255);
+    color: #ffffff;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: rgb(40, 41, 50);
+}
+
+.styled-table tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(64, 204, 255);
+}
+
+#divPack{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 1000px;
+    margin: 0 auto;
+    gap: 200px;
+}
+
+.clickTr{
+    cursor: pointer;
+}
+
+#tablesDiv{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    flex-wrap: wrap;
+}
+
+
+
+#buttonsWordPair{
+    display: flex;
+    gap: 10px;
+}
+
+#buttonsWordPair button{
+    width: 100%;
+}
+
+nav div{
+    display: flex;
+    gap: 1em;
+}
+
+nav a{
+    color: white;
+}
+
+
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color:rgb(0, 89, 255);
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  .alert p {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color:rgb(107, 215, 255);
+  }
+  
+  .alert button {
+    margin-top: 10px;
+    font-size: 22px;
+    padding: 8px 16px;
+  }
+
+  #bottom{
+    color: red;
+  }
+
+#selectionDiv{
+    margin-bottom: 30px;
 }

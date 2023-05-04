@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./styles.css"
 
 export default function App(){
+  const [randomized, setRandomized] = useState(false)
   const [index, setIndex] = useState(() => {
     if(localStorage.getItem("INDEX")){
       return Number(localStorage.getItem("INDEX"))
@@ -42,11 +43,17 @@ export default function App(){
   }, [index])
 
   useEffect(() => {
-    fetch("data/words.json").then(response => response.json())
-    .then(data =>{
-      setWordsEnglish(data.english)
-      setWordsGerman(data.german)
-    })
+    if(localStorage.getItem("WORDSENG")){
+      setWordsEnglish(JSON.parse(localStorage.getItem("WORDSENG")))
+      setWordsGerman(JSON.parse(localStorage.getItem("WORDSGER")))
+    }else{
+      fetch("data/words.json").then(response => response.json())
+      .then(data =>{
+        setWordsEnglish(data.english)
+        setWordsGerman(data.german)
+        setLocalStorage(data.english, data.german)
+      })
+    }
   }, [])
 
   function resetState(){
@@ -54,6 +61,7 @@ export default function App(){
     setIndex(0);
     setMassage("")
     setAnswer(false)
+    revertOrder()
   }
 
   function changeInputLanguage(){
@@ -64,20 +72,62 @@ export default function App(){
     localStorage.setItem("INPUT", inputEnglish)
   }, [inputEnglish])
 
+  
+
+  function randomizeOrder(){
+    let indices = []
+    for(let i = 0; i < wordsEnglish.length; i++){
+      const rand = Math.floor(Math.random() * wordsEnglish.length)
+
+      if(!indices.includes(rand)){
+        indices.push(rand)
+      } else{
+        i--;
+      }
+    }
+
+    let tempWordsEnglish = wordsEnglish.slice()
+    let tempWordsGerman = wordsGerman.slice()
+    for(let j = 0; j < wordsEnglish.length; j++){
+      tempWordsEnglish[j] = wordsEnglish[indices[j]]
+      tempWordsGerman[j] = wordsGerman[indices[j]]
+    }
+
+    setRandomized(true)
+    setWordsEnglish(tempWordsEnglish)
+    setWordsGerman(tempWordsGerman)
+    setLocalStorage(tempWordsEnglish, tempWordsGerman)
+  }
+
   useEffect(() => {
-    if(index == wordsEnglish.length){
+    if(index === wordsEnglish.length){
       setIndex(0)
       setMassage("")
     }
   }, [wordsEnglish])
-  
 
+  function setLocalStorage(english, german){
+    localStorage.setItem("WORDSENG", JSON.stringify(english))
+    localStorage.setItem("WORDSGER", JSON.stringify(german))
+  }
+
+  function revertOrder(){
+    fetch("data/words.json").then(response => response.json())
+    .then(data =>{
+      setWordsEnglish(data.english)
+      setWordsGerman(data.german)
+      setLocalStorage(data.english, data.german)
+    })
+    setRandomized(false)
+  }
   return (
     <>
       <header>
         <nav>
           <ul>
             <li><button onClick={resetState} className="btnStyle">Delete State</button><br/></li>
+            <li><button onClick={randomizeOrder} className="btnStyle">Randomize</button><br/></li>
+            <li><button onClick={revertOrder} className="btnStyle">Revert</button><br/></li>
             <li><button className="btnStyle" onClick={changeInputLanguage}>{inputEnglish ? "Set Input to German" : "Set Input to English"}</button></li>
           </ul>
         </nav>

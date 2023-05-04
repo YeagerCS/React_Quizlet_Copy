@@ -7,7 +7,7 @@ create user interface design for ideas
 
 structurize code into different files === plan structure of the application (easier implementation)
 
-add randomizing -> localStorage
+add randomizing -> localStorage: DONE
 
 create form to add unlimited elements to an array with translation
 
